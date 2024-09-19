@@ -53,7 +53,6 @@ public class UserTestService {
         RuntimeException exception = assertThrows(RuntimeException.class,() -> userService.atualizarUsuario(userUpdateDTO));
         assertEquals("User ID not provided!",exception.getMessage());
     }
-
     @Test
     void shouldReturnListOFUsers(){
         User user = criarUsuarios(null,"Usuario 1","Email@email1.com","teste1");
