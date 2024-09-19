@@ -1,0 +1,38 @@
+name: CI Pipeline
+
+# Aciona o workflow em push ou pull request para o branch principal
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Faz o checkout do código no repositório
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Configura o JDK 17 (ou qualquer versão que você use)
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+
+      # Configura Maven e faz o cache do repositório local
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      # Executa os testes usando Maven
+      - name: Run tests
+        run: mvn test
