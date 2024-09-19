@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/proddb  # Substitua 'localhost', '5432', e 'proddb' pelas suas informações reais
+    username: seu_usuario
+    password: sua_senha
+  jpa:
+    hibernate:
+      ddl-auto: update  # Atualiza o esquema, use 'validate' ou 'none' em produção
+    show-sql: false     # Desativa SQL em produção para otimizar performance
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+logging:
+  level:
+    root: WARN  # Nível de log mais alto em produção para reduzir a verbosidade

@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:file:./h2-db  # Banco de dados em memória H2
+    username: sa
+    password: sa
+  h2:
+    console:
+      enabled: true  # Habilita o console H2 em modo desenvolvimento
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: create  # Atualiza o esquema do banco de dados automaticamente
+      boot:
+        allow_jdbc_metadata_access: false
+    show-sql: true      # Exibe SQLs geradas no console
+    database-platform: org.hibernate.dialect.H2Dialect
