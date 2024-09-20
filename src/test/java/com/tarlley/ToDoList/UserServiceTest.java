@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class UserTestServiceTest {
+public class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;

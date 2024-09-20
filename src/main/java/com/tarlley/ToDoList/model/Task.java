@@ -1,29 +1,34 @@
 package com.tarlley.ToDoList.model;
 
+import com.tarlley.ToDoList.enumeretad.TaskPriority;
+import com.tarlley.ToDoList.enumeretad.TaskStatus;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Data
+@AllArgsConstructor @NoArgsConstructor
 public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String titulo;
-    private String descricao;
-    private String status;
-    private String prioridade;
+    private String title;
+    private String description;
+    private TaskStatus status;
+    private TaskPriority priority;
 
     @Temporal(TemporalType.DATE)
-    private Date dataDeCriacao;
+    private LocalDateTime creationDate;
 
     @Temporal(TemporalType.DATE)
-    private Date dataDeConclusao;
+    private LocalDateTime completionDate;
 
     @ManyToOne
     @JoinColumn(name = "lista_de_tarefas_id")
@@ -34,7 +39,7 @@ public class Task {
             name = "task_category",
             joinColumns = @JoinColumn(name = "task_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private List<Category> categorias;
+    private List<Category> categories;
 
 
 }
