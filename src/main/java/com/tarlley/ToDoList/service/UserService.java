@@ -1,8 +1,8 @@
 package com.tarlley.ToDoList.service;
 
-import com.tarlley.ToDoList.dto.UserUpdateDTO;
-import com.tarlley.ToDoList.dto.UserDTO;
-import com.tarlley.ToDoList.dto.UserRegisterDTO;
+import com.tarlley.ToDoList.dto.user.UserUpdateDTO;
+import com.tarlley.ToDoList.dto.user.UserDTO;
+import com.tarlley.ToDoList.dto.user.UserRegisterDTO;
 import com.tarlley.ToDoList.exceptions.UserNotFoundException;
 import com.tarlley.ToDoList.mapper.UserMapper;
 import com.tarlley.ToDoList.model.User;
@@ -34,16 +34,15 @@ public class UserService {
 
     public UserDTO findUserById(Integer id){
         User user = this.findById(id);
-        UserDTO usuarioDTO = userMapper.toUsuarioDTO(user);
-        return usuarioDTO;
+        return userMapper.toUsuarioDTO(user);
     }
 
-    public UserDTO salvarUsuario(UserRegisterDTO userRegisterDTO){
+    public UserDTO saveNewUser(UserRegisterDTO userRegisterDTO){
         userRepository.findByEmail(userRegisterDTO.email()).ifPresent(user -> {
             throw new RuntimeException("Email já cadastrado!");
         });
 
-        if(userRegisterDTO.nome() == null || userRegisterDTO.senha() == null || userRegisterDTO.email() == null){
+        if(userRegisterDTO.name() == null || userRegisterDTO.password() == null || userRegisterDTO.email() == null){
             throw new RuntimeException("Incomplete information. Review User registration!");
         }
 
@@ -52,7 +51,7 @@ public class UserService {
         return userMapper.toUsuarioDTO(entity);
     }
 
-    public UserDTO atualizarUsuario(UserUpdateDTO userUpdateDTO){
+    public UserDTO updateUser(UserUpdateDTO userUpdateDTO){
 
         if(userUpdateDTO.id() == null){
             throw new RuntimeException("User ID not provided!");
@@ -61,7 +60,7 @@ public class UserService {
         return userMapper.toUsuarioDTO(entity);
     }
 
-    public void deletarUsuario(Integer id){
+    public void deleteUser(Integer id){
         User user = findById(id);
         userRepository.delete(user);
     }

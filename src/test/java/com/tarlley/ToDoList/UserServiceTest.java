@@ -1,8 +1,8 @@
 package com.tarlley.ToDoList;
 
-import com.tarlley.ToDoList.dto.UserDTO;
-import com.tarlley.ToDoList.dto.UserRegisterDTO;
-import com.tarlley.ToDoList.dto.UserUpdateDTO;
+import com.tarlley.ToDoList.dto.user.UserDTO;
+import com.tarlley.ToDoList.dto.user.UserRegisterDTO;
+import com.tarlley.ToDoList.dto.user.UserUpdateDTO;
 import com.tarlley.ToDoList.exceptions.UserNotFoundException;
 import com.tarlley.ToDoList.mapper.UserMapper;
 import com.tarlley.ToDoList.model.User;
@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class UserTestServiceTest {
+public class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
@@ -48,7 +48,7 @@ public class UserTestServiceTest {
     @Test
     void shouldThrowAnRuntimeException(){
         UserUpdateDTO userUpdateDTO = new UserUpdateDTO(null,"Wendel Tarlley","wendel@wendel.com",null,null);
-        RuntimeException exception = assertThrows(RuntimeException.class,() -> userService.atualizarUsuario(userUpdateDTO));
+        RuntimeException exception = assertThrows(RuntimeException.class,() -> userService.updateUser(userUpdateDTO));
         assertEquals("User ID not provided!",exception.getMessage());
     }
     @Test
@@ -81,7 +81,7 @@ public class UserTestServiceTest {
 
         UserRegisterDTO userRegisterDTO = userMapper.toUserRegisterDTO(user);
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> userService.salvarUsuario(userRegisterDTO));
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> userService.saveNewUser(userRegisterDTO));
         assertEquals("Incomplete information. Review User registration!",exception.getMessage());
 
     }

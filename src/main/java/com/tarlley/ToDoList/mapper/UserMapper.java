@@ -1,8 +1,8 @@
 package com.tarlley.ToDoList.mapper;
 
-import com.tarlley.ToDoList.dto.UserDTO;
-import com.tarlley.ToDoList.dto.UserRegisterDTO;
-import com.tarlley.ToDoList.dto.UserUpdateDTO;
+import com.tarlley.ToDoList.dto.user.UserDTO;
+import com.tarlley.ToDoList.dto.user.UserRegisterDTO;
+import com.tarlley.ToDoList.dto.user.UserUpdateDTO;
 import com.tarlley.ToDoList.model.User;
 import org.mapstruct.Mapper;
 

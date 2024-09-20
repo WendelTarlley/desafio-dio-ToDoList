@@ -1,6 +1,6 @@
 package com.tarlley.ToDoList.controller;
 
-import com.tarlley.ToDoList.dto.UserDTO;
+import com.tarlley.ToDoList.dto.user.UserDTO;
 import com.tarlley.ToDoList.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

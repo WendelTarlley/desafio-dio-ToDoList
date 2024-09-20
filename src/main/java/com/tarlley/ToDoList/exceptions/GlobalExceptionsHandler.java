@@ -9,9 +9,13 @@ import org.springframework.web.context.request.WebRequest;
 @ControllerAdvice
 public class GlobalExceptionsHandler {
 
+
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Object> handleCustomBadRequestException(UserNotFoundException ex, WebRequest request){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
-
+    @ExceptionHandler(GlobalNotFoundException.class)
+    public ResponseEntity<Object> handleCustomBadRequestException(GlobalNotFoundException ex, WebRequest request){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
 }
