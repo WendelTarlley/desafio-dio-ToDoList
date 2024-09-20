@@ -82,7 +82,7 @@ public class UserTestServiceTest {
         UserRegisterDTO userRegisterDTO = userMapper.toUserRegisterDTO(user);
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> userService.salvarUsuario(userRegisterDTO));
-        assertEquals("Incomplete information. Review User regitrato!",exception.getMessage());
+        assertEquals("Incomplete information. Review User registration!",exception.getMessage());
 
     }
 
