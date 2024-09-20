@@ -1,4 +1,4 @@
-package com.tarlley.ToDoList.dto;
+package com.tarlley.ToDoList.dto.user;
 
 import com.tarlley.ToDoList.model.TaskList;
 import lombok.Data;
@@ -9,8 +9,8 @@ import java.util.List;
 public class UserDTO {
 
     private Integer id;
-    private String nome;
+    private String name;
     private String email;
-    private String senha;
-    private List<TaskList> listasDeTarefas;
+    private String password;
+    private List<TaskList> taskLists;
 }

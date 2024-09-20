@@ -1,5 +1,6 @@
 package com.tarlley.ToDoList;
 
+import com.tarlley.ToDoList.dto.task.TaskDTO;
 import com.tarlley.ToDoList.enumeretad.TaskPriority;
 import com.tarlley.ToDoList.enumeretad.TaskStatus;
 import com.tarlley.ToDoList.mapper.TaskMapper;
@@ -12,8 +13,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.junit.jupiter.params.provider.Arguments;
 
@@ -34,8 +37,8 @@ public class TaskServiceTest {
     @Mock
     private TaskRepository taskRepository;
 
-    @Mock
-    private TaskMapper taskMapper;
+    @Spy
+    private TaskMapper taskMapper = Mappers.getMapper(TaskMapper.class);
 
     @InjectMocks
     private TaskService taskService;
@@ -53,13 +56,14 @@ public class TaskServiceTest {
         when(taskRepository.save(task)).thenReturn(task);
         TaskDTO taskDTO = taskMapper.toTaskDTO(task);
 
-        assertEquals(taskDTO, taskService.saveTask(task));
+        assertEquals(taskDTO, taskService.saveNewTask(taskDTO));
     }
 
     @ParameterizedTest
     @MethodSource("provideInvalidFields")
     void shouldThrowErrorForInvalidFields(Task invalidTask, String expectedMessage) {
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> taskService.saveTask(invalidTask));
+        TaskDTO invalidTaskDTO = taskMapper.toTaskDTO(invalidTask);
+        RuntimeException exception = assertThrows(IllegalArgumentException.class, () -> taskService.saveNewTask(invalidTaskDTO));
         assertEquals(expectedMessage, exception.getMessage());
     }
 
@@ -69,7 +73,7 @@ public class TaskServiceTest {
         when(taskRepository.findById(1)).thenReturn(Optional.of(task));
 
         TaskDTO taskDTO = taskMapper.toTaskDTO(task);
-        assertEquals(taskService.findTaskById(1),TaskDTO);
+        assertEquals(taskService.findTaskById(1),taskDTO);
 
     }
 
@@ -81,7 +85,8 @@ public class TaskServiceTest {
 
         when(taskRepository.findAll()).thenReturn(Arrays.asList(task,task2));
 
-        assertEquals(taskService.findAllTasks(),Arrays.asList(task,task2));
+        List<TaskDTO> taskDTO = taskMapper.toTaskDTO(Arrays.asList(task, task2));
+        assertEquals(taskService.findAllTasks(),taskDTO);
 
     }
 
@@ -89,15 +94,15 @@ public class TaskServiceTest {
         return Stream.of(
                 Arguments.of(newTask(null, null, "Descrição válida", TaskStatus.STARTED, TaskPriority.AVERAGE,
                                 LocalDateTime.now(), LocalDateTime.now().plusDays(5), null, null),
-                        "Invalid data, review task fields."),
+                        "Blank or null title."),
 
                 Arguments.of(newTask(null, "Título válido", "Descrição válida", null, TaskPriority.AVERAGE,
-                                LocalDateTime.now(), LocalDateTime.now().plusDays(5), null, null),
-                        "Invalid data, review task fields."),
+                                LocalDateTime.now(), LocalDateTime.now().plusDays(5), new TaskList(), null),
+                        "Invalid status field."),
 
-                Arguments.of(newTask(null, "Título válido", null, TaskStatus.STARTED, TaskPriority.AVERAGE,
-                                LocalDateTime.now(), LocalDateTime.now().plusDays(5), null, null),
-                        "Invalid data, review task fields.")
+                Arguments.of(newTask(null, "Título válido", "Descrição válida", TaskStatus.STARTED, TaskPriority.HIGH,
+                                null, LocalDateTime.now().plusDays(5), null, List.of()),
+                        "Invalid creation date.")
         );
     }
 

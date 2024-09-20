@@ -24,10 +24,10 @@ public class Task {
     private TaskStatus status;
     private TaskPriority priority;
 
-    @Temporal(TemporalType.DATE)
+
     private LocalDateTime creationDate;
 
-    @Temporal(TemporalType.DATE)
+
     private LocalDateTime completionDate;
 
     @ManyToOne

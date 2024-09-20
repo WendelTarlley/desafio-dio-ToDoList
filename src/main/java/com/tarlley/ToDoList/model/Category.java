@@ -13,11 +13,11 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String nome;
-    private String descricao;
+    private String name;
+    private String description;
 
-    @ManyToMany(mappedBy = "categorias")
-    private List<Task> tarefas;
+    @ManyToMany(mappedBy = "categories")
+    private List<Task> tasks;
 
 
 }
