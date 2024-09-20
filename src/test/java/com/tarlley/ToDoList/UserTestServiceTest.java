@@ -13,10 +13,8 @@ import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class UserTestService {
+public class UserTestServiceTest {
 
     @Mock
     private UserRepository userRepository;
@@ -84,7 +82,7 @@ public class UserTestService {
         UserRegisterDTO userRegisterDTO = userMapper.toUserRegisterDTO(user);
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> userService.salvarUsuario(userRegisterDTO));
-        assertEquals("Incomplete information. Review User regitrato!",exception.getMessage());
+        assertEquals("Incomplete information. Review User registration!",exception.getMessage());
 
     }
 
