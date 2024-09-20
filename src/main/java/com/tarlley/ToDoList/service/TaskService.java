@@ -1,6 +1,8 @@
 package com.tarlley.ToDoList.service;
 
 import com.tarlley.ToDoList.dto.task.TaskDTO;
+import com.tarlley.ToDoList.dto.task.TaskRegisterDTO;
+import com.tarlley.ToDoList.dto.task.TaskUpdateDTO;
 import com.tarlley.ToDoList.exceptions.GlobalNotFoundException;
 import com.tarlley.ToDoList.mapper.TaskMapper;
 import com.tarlley.ToDoList.model.Task;
@@ -20,7 +22,7 @@ public class TaskService {
     private TaskMapper taskMapper;
 
 
-    public TaskDTO saveNewTask(TaskDTO taskDTO){
+    public TaskDTO saveNewTask(TaskRegisterDTO taskDTO){
 
         if(taskDTO.title()== null || taskDTO.title().isEmpty()){
             throw new IllegalArgumentException("Blank or null title.");
@@ -52,5 +54,17 @@ public class TaskService {
 
     private Task saveTask(Task task){
         return taskRepository.save(task);
+    }
+
+    public TaskDTO updateTask(TaskUpdateDTO taskUpdateDTO) {
+        if(taskUpdateDTO.id() == null){
+            throw new IllegalArgumentException("Task ID Not Provided.");
+        }
+
+        findById(taskUpdateDTO.id());
+        Task entity = taskRepository.save(taskMapper.toEntity(taskUpdateDTO));
+
+        return taskMapper.toTaskDTO(entity);
+
     }
 }
