@@ -10,4 +10,9 @@ public class ToDoListApplication {
 		SpringApplication.run(ToDoListApplication.class, args);
 	}
 
+	//TODO Adicionar informações swagger para cada endpoint
+
+	//TODO Realizar configuração do spring security
+
+
 }

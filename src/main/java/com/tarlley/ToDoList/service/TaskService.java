@@ -1,6 +1,8 @@
 package com.tarlley.ToDoList.service;
 
 import com.tarlley.ToDoList.dto.task.TaskDTO;
+import com.tarlley.ToDoList.dto.task.TaskRegisterDTO;
+import com.tarlley.ToDoList.dto.task.TaskUpdateDTO;
 import com.tarlley.ToDoList.exceptions.GlobalNotFoundException;
 import com.tarlley.ToDoList.mapper.TaskMapper;
 import com.tarlley.ToDoList.model.Task;
@@ -20,16 +22,7 @@ public class TaskService {
     private TaskMapper taskMapper;
 
 
-    public TaskDTO saveNewTask(TaskDTO taskDTO){
-
-        if(taskDTO.title()== null || taskDTO.title().isEmpty()){
-            throw new IllegalArgumentException("Blank or null title.");
-        } else if (taskDTO.status() == null) {
-            throw new IllegalArgumentException("Invalid status field.");
-        } else if (taskDTO.creationDate() == null ) {
-            throw new IllegalArgumentException("Invalid creation date.");
-        }
-
+    public TaskDTO saveNewTask(TaskRegisterDTO taskDTO){
         Task task = saveTask(taskMapper.toEntity(taskDTO));
         return taskMapper.toTaskDTO(task);
     }
@@ -51,6 +44,32 @@ public class TaskService {
     }
 
     private Task saveTask(Task task){
+        if(task.getTitle()== null || task.getTitle().isEmpty()){
+            throw new IllegalArgumentException("Blank or null title.");
+        } else if (task.getStatus() == null) {
+            throw new IllegalArgumentException("Invalid status field.");
+        } else if (task.getCreationDate() == null ) {
+            throw new IllegalArgumentException("Invalid creation date.");
+        }
+
         return taskRepository.save(task);
+    }
+
+    public TaskDTO updateTask(TaskUpdateDTO taskUpdateDTO) {
+        if(taskUpdateDTO.id() == null){
+            throw new IllegalArgumentException("Task ID Not Provided.");
+        }
+
+        findById(taskUpdateDTO.id());
+        Task entity = taskRepository.save(taskMapper.toEntity(taskUpdateDTO));
+
+        return taskMapper.toTaskDTO(entity);
+
+    }
+
+    public void deleteTask(Integer id){
+        Task entity = findById(id);
+        taskRepository.delete(entity);
+
     }
 }

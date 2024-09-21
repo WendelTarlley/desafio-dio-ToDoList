@@ -1,8 +1,11 @@
 package com.tarlley.ToDoList;
 
 import com.tarlley.ToDoList.dto.task.TaskDTO;
+import com.tarlley.ToDoList.dto.task.TaskRegisterDTO;
+import com.tarlley.ToDoList.dto.task.TaskUpdateDTO;
 import com.tarlley.ToDoList.enumeretad.TaskPriority;
 import com.tarlley.ToDoList.enumeretad.TaskStatus;
+import com.tarlley.ToDoList.exceptions.GlobalNotFoundException;
 import com.tarlley.ToDoList.mapper.TaskMapper;
 import com.tarlley.ToDoList.model.Category;
 import com.tarlley.ToDoList.model.Task;
@@ -54,15 +57,16 @@ public class TaskServiceTest {
         task.setId(null);
 
         when(taskRepository.save(task)).thenReturn(task);
+        TaskRegisterDTO taskRegisterDTO = taskMapper.toTaskRegisterDTO(task);
         TaskDTO taskDTO = taskMapper.toTaskDTO(task);
 
-        assertEquals(taskDTO, taskService.saveNewTask(taskDTO));
+        assertEquals(taskDTO, taskService.saveNewTask(taskRegisterDTO));
     }
 
     @ParameterizedTest
     @MethodSource("provideInvalidFields")
     void shouldThrowErrorForInvalidFields(Task invalidTask, String expectedMessage) {
-        TaskDTO invalidTaskDTO = taskMapper.toTaskDTO(invalidTask);
+        TaskRegisterDTO invalidTaskDTO = taskMapper.toTaskRegisterDTO(invalidTask);
         RuntimeException exception = assertThrows(IllegalArgumentException.class, () -> taskService.saveNewTask(invalidTaskDTO));
         assertEquals(expectedMessage, exception.getMessage());
     }
@@ -90,6 +94,25 @@ public class TaskServiceTest {
 
     }
 
+    @Test
+    void WhenNullIDDoesNotUpdateTask(){
+        task.setId(null);
+
+        when(taskRepository.findById(1)).thenReturn(Optional.of(task));
+        TaskUpdateDTO taskUpdateDTO = taskMapper.toTaskUpdateDTO(task);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> taskService.updateTask(taskUpdateDTO));
+
+        assertEquals("Task ID Not Provided.",exception.getMessage());
+    }
+
+    @Test
+    void ShouldThrowUserNotFoundException(){
+        when(taskRepository.findById(1)).thenReturn(Optional.empty());
+
+        GlobalNotFoundException exception = assertThrows(GlobalNotFoundException.class, () -> taskService.findTaskById(1));
+
+        assertEquals("Task not found!",exception.getMessage());
+    }
     private static Stream<Arguments> provideInvalidFields() {
         return Stream.of(
                 Arguments.of(newTask(null, null, "Descrição válida", TaskStatus.STARTED, TaskPriority.AVERAGE,

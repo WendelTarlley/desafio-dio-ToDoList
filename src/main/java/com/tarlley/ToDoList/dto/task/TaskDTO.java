@@ -4,18 +4,20 @@ import com.tarlley.ToDoList.enumeretad.TaskPriority;
 import com.tarlley.ToDoList.enumeretad.TaskStatus;
 import com.tarlley.ToDoList.model.Category;
 import com.tarlley.ToDoList.model.TaskList;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record TaskDTO(Integer id,
-                      String title,
-                      String description,
-                      TaskStatus status,
-                      TaskPriority priority,
-                      LocalDateTime creationDate,
-                      LocalDateTime completionDate,
-                      TaskList taskList,
-                      List<Category> categories
-) {
+@Data
+public class TaskDTO {
+  private Integer id;
+  private String title;
+  private String description;
+  private TaskStatus status;
+  private TaskPriority priority;
+  private LocalDateTime creationDate;
+  private LocalDateTime completionDate;
+  private TaskList taskList;
+  private List<Category> categories;
 }
