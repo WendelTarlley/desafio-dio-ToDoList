@@ -23,15 +23,6 @@ public class TaskService {
 
 
     public TaskDTO saveNewTask(TaskRegisterDTO taskDTO){
-
-        if(taskDTO.title()== null || taskDTO.title().isEmpty()){
-            throw new IllegalArgumentException("Blank or null title.");
-        } else if (taskDTO.status() == null) {
-            throw new IllegalArgumentException("Invalid status field.");
-        } else if (taskDTO.creationDate() == null ) {
-            throw new IllegalArgumentException("Invalid creation date.");
-        }
-
         Task task = saveTask(taskMapper.toEntity(taskDTO));
         return taskMapper.toTaskDTO(task);
     }
@@ -53,6 +44,14 @@ public class TaskService {
     }
 
     private Task saveTask(Task task){
+        if(task.getTitle()== null || task.getTitle().isEmpty()){
+            throw new IllegalArgumentException("Blank or null title.");
+        } else if (task.getStatus() == null) {
+            throw new IllegalArgumentException("Invalid status field.");
+        } else if (task.getCreationDate() == null ) {
+            throw new IllegalArgumentException("Invalid creation date.");
+        }
+
         return taskRepository.save(task);
     }
 
@@ -65,6 +64,12 @@ public class TaskService {
         Task entity = taskRepository.save(taskMapper.toEntity(taskUpdateDTO));
 
         return taskMapper.toTaskDTO(entity);
+
+    }
+
+    public void deleteTask(Integer id){
+        Task entity = findById(id);
+        taskRepository.delete(entity);
 
     }
 }
