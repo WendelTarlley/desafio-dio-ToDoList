@@ -1,9 +1,9 @@
 package com.tarlley.ToDoList.dto.task;
 
+import com.tarlley.ToDoList.dto.category.CategoryDTO;
+import com.tarlley.ToDoList.dto.taskList.TaskListDTO;
 import com.tarlley.ToDoList.enumeretad.TaskPriority;
 import com.tarlley.ToDoList.enumeretad.TaskStatus;
-import com.tarlley.ToDoList.model.Category;
-import com.tarlley.ToDoList.model.TaskList;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -18,6 +18,6 @@ public class TaskDTO {
   private TaskPriority priority;
   private LocalDateTime creationDate;
   private LocalDateTime completionDate;
-  private TaskList taskList;
-  private List<Category> categories;
+  private TaskListDTO taskList;
+  private List<CategoryDTO> categories;
 }
