@@ -13,15 +13,15 @@ public class TaskList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String nome;
-    private String descricao;
+    private String name;
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private User user;
 
     @OneToMany(mappedBy = "taskList", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Task> tarefas;
+    private List<Task> tasks;
 
 
 }
