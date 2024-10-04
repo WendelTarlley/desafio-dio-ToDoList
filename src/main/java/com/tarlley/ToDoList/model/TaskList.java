@@ -16,11 +16,12 @@ public class TaskList {
     private String name;
     private String description;
 
+
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private User user;
 
-    @OneToMany(mappedBy = "taskList", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "taskList", cascade = CascadeType.ALL)
     private List<Task> tasks;
 
 

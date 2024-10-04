@@ -18,6 +18,5 @@ public class TaskDTO {
   private TaskPriority priority;
   private LocalDateTime creationDate;
   private LocalDateTime completionDate;
-  private TaskListDTO taskList;
   private List<CategoryDTO> categories;
 }

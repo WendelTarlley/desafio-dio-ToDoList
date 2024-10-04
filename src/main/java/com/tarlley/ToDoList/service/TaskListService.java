@@ -1,10 +1,9 @@
 package com.tarlley.ToDoList.service;
 
 import com.tarlley.ToDoList.dto.taskList.TaskListDTO;
-import com.tarlley.ToDoList.dto.taskList.TaskListRegisterDTO;
-import com.tarlley.ToDoList.dto.taskList.TaskListUpdateDTO;
 import com.tarlley.ToDoList.exceptions.GlobalNotFoundException;
 import com.tarlley.ToDoList.mapper.TaskListMapper;
+import com.tarlley.ToDoList.mapper.TaskMapper;
 import com.tarlley.ToDoList.model.TaskList;
 import com.tarlley.ToDoList.repository.TaskListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +20,13 @@ public class TaskListService {
     @Autowired
     private TaskListMapper taskListMapper;
 
+    @Autowired
+    private TaskService taskService;
+
+    @Autowired
+    private TaskMapper taskMapper;
+
+    @Autowired
 
     public List<TaskListDTO> findAllTaskLists(){
         return taskListMapper.toTaskListDTO(taskListRepository.findAll());
@@ -34,17 +40,23 @@ public class TaskListService {
         return taskListMapper.toTaskListDTO(taskListRepository.findByUserId(userId));
     }
 
-    public TaskListDTO saveNewTaskList(TaskListRegisterDTO taskListRegisterDTO){
-        TaskList taskList = saveTaskList(taskListMapper.toEntity(taskListRegisterDTO));
+    public TaskListDTO saveNewTaskList(TaskListDTO taskListDTO){
+
+        TaskList taskList = saveTaskList(taskListMapper.toEntity(taskListDTO));
+
+        taskList.getTasks().forEach(item -> item.setTaskList(taskList));
+
+        saveTaskList(taskList);
+
         return taskListMapper.toTaskListDTO(taskList);
     }
 
-    public TaskListDTO updateTaskList(TaskListUpdateDTO taskListUpdateDTO){
-        if (taskListUpdateDTO.id() == null){
+    public TaskListDTO updateTaskList(TaskListDTO taskListDTO){
+        if (taskListDTO.getId() == null){
             throw new IllegalArgumentException("TaskList ID Not Provided.");
         }
-        findById(taskListUpdateDTO.id());
-        TaskList taskList = saveTaskList(taskListMapper.toEntity(taskListUpdateDTO));
+        findById(taskListDTO.getId());
+        TaskList taskList = saveTaskList(taskListMapper.toEntity(taskListDTO));
         return taskListMapper.toTaskListDTO(taskList);
     }
 

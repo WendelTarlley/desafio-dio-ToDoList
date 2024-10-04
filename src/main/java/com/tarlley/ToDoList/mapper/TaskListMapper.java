@@ -1,10 +1,9 @@
 package com.tarlley.ToDoList.mapper;
 
 import com.tarlley.ToDoList.dto.taskList.TaskListDTO;
-import com.tarlley.ToDoList.dto.taskList.TaskListRegisterDTO;
-import com.tarlley.ToDoList.dto.taskList.TaskListUpdateDTO;
 import com.tarlley.ToDoList.model.TaskList;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 
@@ -15,9 +14,6 @@ public interface TaskListMapper {
 
     TaskListDTO toTaskListDTO(TaskList taskList);
 
-    TaskList toEntity(TaskListRegisterDTO taskListRegisterDTO);
+    TaskList toEntity(TaskListDTO taskListDTO);
 
-    TaskList toEntity(TaskListUpdateDTO taskListUpdateDTO);
-
-    List<TaskList> toEntity(List<TaskListUpdateDTO> listUpdateDTOS);
 }

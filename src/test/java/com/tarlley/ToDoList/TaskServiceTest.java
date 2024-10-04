@@ -1,8 +1,6 @@
 package com.tarlley.ToDoList;
 
 import com.tarlley.ToDoList.dto.task.TaskDTO;
-import com.tarlley.ToDoList.dto.task.TaskRegisterDTO;
-import com.tarlley.ToDoList.dto.task.TaskUpdateDTO;
 import com.tarlley.ToDoList.enumeretad.TaskPriority;
 import com.tarlley.ToDoList.enumeretad.TaskStatus;
 import com.tarlley.ToDoList.exceptions.GlobalNotFoundException;
@@ -57,16 +55,15 @@ public class TaskServiceTest {
         task.setId(null);
 
         when(taskRepository.save(task)).thenReturn(task);
-        TaskRegisterDTO taskRegisterDTO = taskMapper.toTaskRegisterDTO(task);
         TaskDTO taskDTO = taskMapper.toTaskDTO(task);
 
-        assertEquals(taskDTO, taskService.saveNewTask(taskRegisterDTO));
+        assertEquals(taskDTO, taskService.saveNewTask(taskDTO));
     }
 
     @ParameterizedTest
     @MethodSource("provideInvalidFields")
     void shouldThrowErrorForInvalidFields(Task invalidTask, String expectedMessage) {
-        TaskRegisterDTO invalidTaskDTO = taskMapper.toTaskRegisterDTO(invalidTask);
+        TaskDTO invalidTaskDTO = taskMapper.toTaskDTO(invalidTask);
         RuntimeException exception = assertThrows(IllegalArgumentException.class, () -> taskService.saveNewTask(invalidTaskDTO));
         assertEquals(expectedMessage, exception.getMessage());
     }
@@ -99,8 +96,8 @@ public class TaskServiceTest {
         task.setId(null);
 
         when(taskRepository.findById(1)).thenReturn(Optional.of(task));
-        TaskUpdateDTO taskUpdateDTO = taskMapper.toTaskUpdateDTO(task);
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> taskService.updateTask(taskUpdateDTO));
+        TaskDTO taskDTO = taskMapper.toTaskDTO(task);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> taskService.updateTask(taskDTO));
 
         assertEquals("Task ID Not Provided.",exception.getMessage());
     }

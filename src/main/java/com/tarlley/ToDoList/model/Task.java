@@ -31,7 +31,7 @@ public class Task {
     private LocalDateTime completionDate;
 
     @ManyToOne
-    @JoinColumn(name = "lista_de_tarefas_id")
+    @JoinColumn(name = "task_list_id")
     private TaskList taskList;
 
     @ManyToMany

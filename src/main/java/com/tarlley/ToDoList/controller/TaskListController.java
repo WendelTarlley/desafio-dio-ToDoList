@@ -1,8 +1,6 @@
 package com.tarlley.ToDoList.controller;
 
 import com.tarlley.ToDoList.dto.taskList.TaskListDTO;
-import com.tarlley.ToDoList.dto.taskList.TaskListRegisterDTO;
-import com.tarlley.ToDoList.dto.taskList.TaskListUpdateDTO;
 import com.tarlley.ToDoList.service.TaskListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,16 +29,16 @@ public class TaskListController {
     }
 
     @PostMapping()
-    public ResponseEntity<TaskListDTO> saveNewTask(@RequestBody TaskListRegisterDTO taskListRegisterDTO){
-        TaskListDTO createdTask = taskListService.saveNewTaskList(taskListRegisterDTO);
+    public ResponseEntity<TaskListDTO> saveNewTask(@RequestBody TaskListDTO taskListDTO){
+        TaskListDTO createdTask = taskListService.saveNewTaskList(taskListDTO);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("{id}").buildAndExpand(createdTask.getId()).toUri();
         return ResponseEntity.created(location).body(createdTask);
     }
 
     @PutMapping
-    public ResponseEntity<TaskListDTO> updateTask(@RequestBody TaskListUpdateDTO taskListUpdateDTO){
-        return ResponseEntity.ok().body(taskListService.updateTaskList(taskListUpdateDTO));
+    public ResponseEntity<TaskListDTO> updateTask(@RequestBody TaskListDTO taskListDTO){
+        return ResponseEntity.ok().body(taskListService.updateTaskList(taskListDTO));
     }
 
     @DeleteMapping("/{id}")
